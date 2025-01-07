@@ -484,6 +484,18 @@ function shuffleChar(str, iterations) {
     }
     return head+tail;
   }
+  let step=0;
+  let temp;
+  do {
+    if(step===0){
+      temp= shuffle(str);
+    }else{
+      temp=shuffle(temp);
+    }
+    step++;
+  } while (temp !== str);
+  iterations=iterations%step;
+
   let result = str;
   for (let i = 0; i < iterations; i++) {
     result=shuffle(result);
