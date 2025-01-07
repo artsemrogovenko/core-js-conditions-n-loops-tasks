@@ -420,7 +420,13 @@ function rotateMatrix(matrix) {
     row+=1;
     i-=1;
   }
-  return rotated;
+  for (let j = 0; j < size; j++) {
+    for (let m = 0; m < size; m++) {
+      matrix[j][m]=rotated[j][m];
+    }
+  }
+
+  return matrix;
 }
 
 /**
