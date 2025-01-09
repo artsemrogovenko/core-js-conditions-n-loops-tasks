@@ -444,14 +444,22 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  throw new Error('Not implemented');
-
+  for (let i = 0; i < arr.length-1; i++) {
+    for (let j = arr.length-1; j >= i; j--) {
+      if(arr[i]>arr[j]){
+        let tmp= arr[i];
+        arr[i]=arr[j];
+        arr[j]=tmp;
+      }
+    }
+  }
+  return arr;
   let length=arr.length;
   let middle = Math.floor(length/2);
   let sorted=arr;
   let pivot=sorted[middle];
 
-  // return sorted;
+  return sorted;
 }
 
 /**
@@ -522,6 +530,53 @@ function shuffleChar(str, iterations) {
  */
 function getNearestBigger(number) {
   let variants= [];
+  let inputDigits =[];
+  let temp=number;
+  while (temp > 0) {
+    inputDigits.unshift(temp%10);
+    temp = Math.trunc(temp/10);
+  }
+
+  let numLen=inputDigits.length;
+
+  let startEnd=numLen-2;
+  while(inputDigits[startEnd]>=inputDigits[startEnd+1]){
+    startEnd--;
+  }
+  if(startEnd<0){
+    return number;
+  }
+
+  let tailDigits=inputDigits.filter((val,index)=>index>0);
+  let maxDigit= Math.max(...tailDigits);
+  let minDigit = Math.min( ...tailDigits.filter((digit)=>digit!==0));
+
+  if(maxDigit===minDigit){
+      if(inputDigits[0]>minDigit){
+        inputDigits[numLen-1]=inputDigits[0];
+        inputDigits[0]=minDigit;
+        return inputDigits.reduce((acc,value)=>acc*10+value,0);
+      }
+      return number;
+  }
+
+  if(tailDigits[0]===0){
+      let indexMinValue ;
+        for (let index = 0; index < tailDigits.length; index++) {
+          if(tailDigits[index]===minDigit){
+            indexMinValue=index;
+            break;
+          }
+        };
+
+      tailDigits.splice(indexMinValue,1);
+      tailDigits.unshift(minDigit);
+
+      let arr=tailDigits.filter((val,index)=>index>0).sort();
+      tailDigits.splice(1,arr.length,...arr);
+      return tailDigits.reduce((acc,value)=>acc*10+value,inputDigits[0]);
+  }
+
   throw new Error('Not implemented');
 }
 
